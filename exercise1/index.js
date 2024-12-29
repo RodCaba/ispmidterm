@@ -1,8 +1,15 @@
 var player;
 var recorder;
 var interface;
-var effectsInterface;
+var lpfControls;
+var reverbControls;
 var recordButton;
+
+// Effects
+var lowPassFilter;
+var reverbFilter;
+
+let effect;
 
 function preload() {
 	player = new Player();
@@ -25,20 +32,32 @@ function setup() {
 		triggerRecord
 	);
 
-  effectsInterface = new EffectsInterface();
-  effectsInterface.start();
+  lowPassFilter = new p5.LowPass();
+  reverbFilter = new p5.Reverb();
+
+	lpfControls = new LowPassFilterControls();
+	lpfControls.start();
+
+  reverbControls = new ReverbControls();
+  reverbControls.start();
+
+	// Disconnect the clean sound from the output
+	player.connectFilters();
 }
 
 function draw() {
-  background(220);
+	background(220);
 	interface.update(player.isPlaying);
-  effectsInterface.update();
+	lpfControls.update();
+  reverbControls.update();
 }
 
 function mousePressed() {
-  effectsInterface.mousePressed();
+	lpfControls.mousePressed();
+  reverbControls.mousePressed();
 }
 
 function mouseReleased() {
-  effectsInterface.mouseReleased();
+	lpfControls.mouseReleased();
+  reverbControls.mouseReleased();
 }

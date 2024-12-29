@@ -26,6 +26,16 @@ class Player {
     this.soundFile.stop();
   }
 
+  connectFilters() {
+    this.soundFile.disconnect();
+    lowPassFilter.process(this.soundFile);
+    reverbFilter.process(this.soundFile);
+  }
+
+  disconnect() {
+    this.soundFile.disconnect();
+  }
+
   get isPlaying() {
     return this.soundFile.isPlaying();
   } 

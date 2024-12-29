@@ -1,6 +1,6 @@
 // Class for Knob elements, which are used to control effects parameters
 class Knob {
-  constructor(x, y, label, minVal, maxVal) {
+  constructor(x, y, label, minVal, maxVal, initialVal) {
     this.dragging = false;
     this.mouseOver = false;
 
@@ -13,7 +13,7 @@ class Knob {
 
     this.radius = 25;
     this.angle = 0;
-    this.offsetAngle = 0;
+    this.offsetAngle = map(initialVal, minVal, maxVal, 0, TWO_PI);
   }
 
   draw() {
@@ -34,7 +34,6 @@ class Knob {
     // Calculate the value of the knob by mapping the angle to the range of values
     let calcAngle = 0;
 
-    console.log(this.angle);
     if (this.angle === 0) {
       calcAngle = 0;
     } else if (this.angle < 0) {
@@ -43,7 +42,6 @@ class Knob {
       calcAngle = map(this.angle, 0, PI, TWO_PI, PI);
     }
 
-    console.log(int(degrees(calcAngle)));
 
     if (this.angle === 0) {
       this.value = this.minVal;
