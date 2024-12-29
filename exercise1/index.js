@@ -50,6 +50,8 @@ function draw() {
 	interface.update(player.isPlaying);
 	lpfControls.update();
   reverbControls.update();
+
+  player.drawSpectrum();
 }
 
 function mousePressed() {

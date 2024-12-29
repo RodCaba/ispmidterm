@@ -12,7 +12,7 @@ class PlayBackInterface {
 	}
 
 	start() {
-		createCanvas(720, 900);
+		createCanvas(1020, 900);
 		background(220);
 
 		this.startButtons();
