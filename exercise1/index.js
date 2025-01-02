@@ -61,6 +61,8 @@ function setup() {
 function draw() {
 	background(220);
 	interface.update(player.isPlaying);
+	player.drawMasterVolume();
+	player.updateMasterVolume();
 	lpfControls.update();
   reverbControls.update();
 	dynamicCompressorControls.update();
