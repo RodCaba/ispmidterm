@@ -20,7 +20,7 @@ class Player {
     let spectrum = this.fftOriginal.analyze();
     let spectrumFiltered = this.fftFiltered.analyze();
     push();
-    translate(width / 2, height / 2);
+    translate(width / 2 + 300, height / 2);
     fill(0);
     text('Spectrum In', 0, 0);
     text('Spectrum Out', 0, 250);
@@ -56,9 +56,11 @@ class Player {
   }
 
   connectFilters() {
+    filterChain = new p5.Filter();
+
     this.soundFile.disconnect();
-    lowPassFilter.process(this.soundFile);
-    reverbFilter.process(this.soundFile);
+    filterChain.chain(lowPassFilter, reverbFilter, compressorFilter, distortionFilter);
+    this.soundFile.connect(filterChain);
   }
 
   disconnect() {
