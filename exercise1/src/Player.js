@@ -29,7 +29,7 @@ class Player {
     let spectrum = this.fftOriginal.analyze();
     let spectrumFiltered = this.fftFiltered.analyze();
     push();
-    translate(width / 2 + 150, height / 2);
+    translate(width / 2 + 110, height / 4);
     fill(0);
     text('Spectrum In', 0, 0);
     text('Spectrum Out', 0, 250);
@@ -43,8 +43,8 @@ class Player {
     stroke(255, 0, 0);
     for (let i = 0; i < spectrumFiltered.length; i++) {
       let amp = spectrumFiltered[i];
-      let y = map(amp, 0, 255, 600, 200);
-      rect(i * spaceBetween, y, spaceBetween, 600 - y);
+      let y = map(amp, 0, 255, 500, 300);
+      rect(i * spaceBetween, y, spaceBetween, 500 - y);
     }
     pop();
   }
