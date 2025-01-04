@@ -47,5 +47,12 @@ class Speech {
         value: number
       }
     }
+
+    if (command === 'circle' || command === 'square' || command === 'triangle') {
+      return {
+        type: 'shape',
+        value: command
+      }
+    }
   }
 }

@@ -20,7 +20,8 @@ class Analyzer {
     }
     this.sound4Params = {
       color: 'green',
-      numberOfShapes: 1
+      numberOfShapes: 1,
+      shape: 'square',
     }
   }
 
@@ -54,6 +55,8 @@ class Analyzer {
         this.sound4Params.color = command.value;
       } else if (command.type === 'number') {
         this.sound4Params.numberOfShapes = command.value;
+      } else if (command.type === 'shape') {
+        this.sound4Params.shape = command.value;
       }
     }
   }
@@ -80,10 +83,21 @@ class Analyzer {
 
   drawSound4() {
     fill(this.sound4Params.color);
-    for (let i = 0; i < this.sound4Params.numberOfShapes; i++) {
-      let x = width / 2 + i % 2 * 100;
-      let y = height / 2 + i % 2 * 100;
-      ellipse(x, y, this.rms, this.rms);
+    let cols = Math.ceil(Math.sqrt(this.sound4Params.numberOfShapes));
+    let rows = Math.floor(this.sound4Params.numberOfShapes / cols);
+    let w = width / cols;
+    let h = height / rows;
+    for (let i = 0; i < cols; i++) {
+      for (let j = 0; j < rows; j++) {
+        let size = map(this.rms, 0, 200, 10, 100);
+        if (this.sound4Params.shape === 'circle') {
+          ellipse(i * w, j * h, size, size);
+        } else if(this.sound4Params.shape === 'square') {
+          rect(i * w, j * h, size, size);
+        } else if(this.sound4Params.shape === 'triangle') {
+          triangle(i * w, j * h, i * w + size, j * h, i * w + size / 2, j * h + size);
+        }
+      }
     }
   }
 }
