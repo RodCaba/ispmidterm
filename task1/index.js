@@ -5,6 +5,7 @@ var lpfControls;
 var reverbControls;
 var dynamicCompressorControls;
 var waveshaperDistortionControls;
+var delayControls;
 var recordButton;
 
 // Effects
@@ -13,6 +14,7 @@ var lowPassFilter;
 var reverbFilter;
 var compressorFilter;
 var distortionFilter;
+var delayFilter;
 
 let effect;
 
@@ -37,10 +39,22 @@ function setup() {
 		triggerRecord
 	);
 
+	interface.sourceSelector.changed(() => {
+		if (interface.sourceSelector.value() === 'mic') {
+			interface.recordButton.mousePressed(triggerMicRecord);
+		} else {
+			player = new Player();
+			player.load('./static/example.wav');
+			player.connectFilters();
+			interface.recordButton.mousePressed(triggerRecord);
+		}
+	});
+
   lowPassFilter = new p5.LowPass();
   reverbFilter = new p5.Reverb();
 	compressorFilter = new p5.Compressor();
 	distortionFilter = new p5.Distortion();
+	delayFilter = new p5.Delay();
 
 	lpfControls = new LowPassFilterControls();
 	lpfControls.start();
@@ -54,19 +68,23 @@ function setup() {
 	waveshaperDistortionControls = new WaveshaperDistortionControls();
 	waveshaperDistortionControls.start();
 
+	delayControls = new DelayControls();
+	delayControls.start();
+
 	// Disconnect the clean sound from the output
 	player.connectFilters();
 }
 
 function draw() {
 	background(220);
-	interface.update(player.isPlaying);
+	interface.update(player.isPlaying, recorder.isRecording);
 	player.drawMasterVolume();
 	player.updateMasterVolume();
 	lpfControls.update();
   reverbControls.update();
 	dynamicCompressorControls.update();
 	waveshaperDistortionControls.update();
+	delayControls.update();
 
   player.drawSpectrum();
 }
@@ -76,6 +94,7 @@ function mousePressed() {
   reverbControls.mousePressed();
 	dynamicCompressorControls.mousePressed();
 	waveshaperDistortionControls.mousePressed();
+	delayControls.mousePressed();
 }
 
 function mouseReleased() {
@@ -83,4 +102,5 @@ function mouseReleased() {
   reverbControls.mouseReleased();
 	dynamicCompressorControls.mouseReleased();
 	waveshaperDistortionControls.mouseReleased();
+	delayControls.mouseReleased();
 }

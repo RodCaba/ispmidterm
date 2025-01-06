@@ -9,18 +9,19 @@ class PlayBackInterface {
 		this.skipToEndButton = createButton('Skip to End');
 		this.loopButton = createButton('Loop');
 		this.recordButton = createButton('Record');
+		this.sourceSelector = createSelect();
 	}
 
 	start() {
-		createCanvas(1200, 1000);
+		createCanvas(1200, 1200);
 		background(220);
 
 		this.startButtons();
 	}
 
 	// Calls at every rerender of the canvas. Updates the interface
-	update(isPlayerPlaying) {
-		this.drawButtons(isPlayerPlaying);
+	update(isPlayerPlaying, isRecording) {
+		this.drawButtons(isPlayerPlaying, isRecording);
 	}
 
 	// Set the position of the buttons
@@ -32,6 +33,9 @@ class PlayBackInterface {
 		this.skipToEndButton.position(270, 10);
 		this.loopButton.position(360, 10);
 		this.recordButton.position(410, 10);
+		this.sourceSelector.position(500, 10);
+		this.sourceSelector.option('Prerecord', 'prerecord');
+		this.sourceSelector.option('Microphone', 'mic');
 	}
 
 	setButtonFunctions(
@@ -52,13 +56,19 @@ class PlayBackInterface {
 		this.recordButton.mousePressed(recordFunction);
 	}
 
-	drawButtons(isPlayerPlaying) {
+	drawButtons(isPlayerPlaying, isRecording) {
 		if (isPlayerPlaying) {
 			this.pauseButton.removeAttribute('disabled');
 			this.playButton.attribute('disabled', '');
 		} else {
 			this.pauseButton.attribute('disabled', '');
 			this.playButton.removeAttribute('disabled');
+		}
+
+		if (isRecording) {
+			this.recordButton.html('Pause Recording');
+		} else {
+			this.recordButton.html('Record');
 		}
 	}
 }

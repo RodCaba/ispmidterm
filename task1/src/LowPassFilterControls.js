@@ -22,6 +22,7 @@ class LowPassFilterControls {
 		);
 		this.lpfDryWet = createSlider(0, 1, 0.5, 0.01);
 		this.lpfOutputLevel = createSlider(0, 1, 1, 0.01);
+		this.filterSelector = createSelect();
 	}
 
 	update() {
@@ -40,6 +41,25 @@ class LowPassFilterControls {
 		this.lpfOutputLevel.position(this.initialX + 130, this.initialY + 150);
 		this.lpfOutputLevel.style('transform', 'rotate(270deg)');
 		this.lpfOutputLevel.style('height', '100px');
+
+		this.filterSelector.position(this.initialX, this.initialY - 10);
+		this.filterSelector.option('Low Pass Filter', 'low');
+		this.filterSelector.option('High Pass Filter', 'high');
+		this.filterSelector.option('Band Pass Filter', 'band');
+
+		this.filterSelector.changed(() => {
+			lowPassFilter.disconnect();
+			let selectedFilter = this.filterSelector.value();
+			if (selectedFilter === 'low') {
+				lowPassFilter = new p5.LowPass();
+			} else if (selectedFilter === 'high') {
+				lowPassFilter = new p5.HighPass();
+			} else if (selectedFilter === 'band') {
+				lowPassFilter = new p5.BandPass();
+			}
+
+			player.connectFilters();
+		});
 	}
 
 	setLowPassFilter() {
@@ -49,7 +69,6 @@ class LowPassFilterControls {
 		this.lpfCutOff.draw();
 		this.lpfRes.draw();
 		fill(0);
-		text('Low Pass Filter', this.initialX, this.initialY);
 
 		text('Dry/Wet', this.initialX + 30, this.initialY + 280);
 		text(this.lpfDryWet.value(), this.initialX, this.initialY + 200);

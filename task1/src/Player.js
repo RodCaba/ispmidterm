@@ -23,6 +23,16 @@ class Player {
     this.fftFiltered.setInput(filterChain);
   }
 
+  loadSound(sound) {
+    this.soundFile.disconnect();
+    this.originalFile.disconnect();
+    this.soundFile = sound;
+    this.originalFile = sound;
+    this.originalFile.disconnect();
+    this.fftOriginal.setInput(this.originalFile);
+    this.fftFiltered.setInput(filterChain);
+  }
+
   // Draw the waveform of the audio file
   drawSpectrum() {
     let spaceBetween = 1;
@@ -84,7 +94,7 @@ class Player {
   connectFilters() {
     filterChain = new p5.Filter();
     this.soundFile.disconnect();
-    filterChain.chain(lowPassFilter, distortionFilter, compressorFilter, reverbFilter);
+    filterChain.chain(lowPassFilter, distortionFilter, delayFilter, compressorFilter, reverbFilter);
     this.soundFile.connect(filterChain);
   }
 
